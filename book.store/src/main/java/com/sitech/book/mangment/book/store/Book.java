@@ -2,40 +2,40 @@ package com.sitech.book.mangment.book.store;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "books")
+@Entity(name = "book")
+@Table(name = "book")
 public class Book {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
-    private String nameBook;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "book_name")
+    private String bookName;
+
+    @Column(name = "year")
     private int year;
+
+    @Column(name = "category")
     private String category;
-
-    /// @Column(name="BOOK_NAME", length=50, nullable=false)
-
-    ///@Temporal(TemporalType.DATE)
-    ///private Date birthDate;
-
-    ///@Enumerated(EnumType.STRING)
-    ///private BookType category;
 
     public Book() {
 
     }
-    public Book(int id, String nameBook, int year, String category) {
+    public Book(Long id, String bookName, int year, String category) {
         super();
         this.id= id;
-        this.nameBook= nameBook;
+        this.bookName= bookName;
         this.year = year;
         this.category= category;
     }
-    public String getNameBook() {
-        return nameBook;
+    public String getBookName() {
+        return bookName;
     }
 
-    public void setNameBook(String nameBook) {
-        this.nameBook = nameBook;
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
     }
 
     public int getYear() {
@@ -53,16 +53,16 @@ public class Book {
         this.category = category;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id +", nameBook=" + nameBook + ", year=" + year +", category=" + category +"]";
+        return "User [id=" + id +", nameBook=" + bookName + ", year=" + year +", category=" + category +"]";
     }
 }
