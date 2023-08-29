@@ -4,52 +4,81 @@ import com.sitech.book.mangment.book.store.Book;
 import com.sitech.book.mangment.book.store.BookRepository;
 import com.sitech.book.mangment.book.store.Cart;
 import com.sitech.book.mangment.book.store.CartRepository;
-import com.sitech.book.mangment.book.store.mapper.CartMapper;
 import com.sitech.book.mangment.book.store.service.CartService;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final BookRepository bookRepository;
-    private final CartMapper cartMapper;
-    protected Cart save;
 
-    public <CartMappers> CartServiceImpl(CartRepository cartRepository, BookRepository bookRepository, CartMapper cartMapper) {
+    @Autowired
+    public CartServiceImpl(CartRepository cartRepository, BookRepository bookRepository) {
         this.cartRepository = cartRepository;
         this.bookRepository = bookRepository;
-        this.cartMapper = cartMapper;
-    }
-
-    public Cart createCart() {
-        Cart cart = cartRepository.save(new Cart());
-        return cartMapper.cart(cart);
     }
 
     @Override
-    public  Cart addToCart(Long cartId, Long bookId) throws Throwable {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public List<Cart> getAllCarts() {
+        return cartRepository.findAll();
+    }
 
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+    @Override
+    public Cart getCartById(Long id) {
+        return cartRepository.findById(id).orElse(null);
+    }
 
-        book.setCart(cart);
-        bookRepository.save(book);
+    @Override
+    public Cart createCart() {
+        Cart cart = new Cart();
+        return cartRepository.save(cart);
+    }
+
+    @Override
+    public void deleteCart(Long id) {
+        cartRepository.deleteById(id);
+    }
+
+    @Override
+    public Cart addBookToCart(Long cartId, Long bookId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
+
+        if (cart != null && book != null) {
+            cart.addBook(book);
+            cartRepository.save(cart);
+        }
         return cart;
     }
 
     @Override
-    public void removeFromCart(Long cartId, Long bookId) throws Throwable {
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public void removeBookFromCart(Long cartId, Long bookId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
 
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-
-        book.setCart(null);
-        bookRepository.save(book);
+        if (cart != null && book != null) {
+            cart.removeBook(book);
+            cartRepository.save(cart);
+        }
     }
 
+    @Override
+    public int getTotalNumberOfBooksInCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            return cart.getTotalNumberOfBooks();
+        }
+        return 0;
+    }
+
+    @Override
+    public double getTotalPriceInCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            return cart.getTotalPrice();
+        }
+        return 0;
+    }
 }

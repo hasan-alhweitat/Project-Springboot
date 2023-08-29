@@ -1,11 +1,15 @@
 package com.sitech.book.mangment.book.store.mapper;
 
+
 import com.sitech.book.mangment.book.store.Cart;
 import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface CartMapper {
-    CartDto cartToCartDto(Cart cart);
+    CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-    Cart cart(Cart cart);
+    @Mapping(target = "id", ignore = true)
+    Cart cartToCart(Cart cart);
 }

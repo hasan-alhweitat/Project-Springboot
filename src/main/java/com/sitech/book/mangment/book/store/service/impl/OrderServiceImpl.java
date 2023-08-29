@@ -5,8 +5,10 @@ import com.sitech.book.mangment.book.store.BookRepository;
 import com.sitech.book.mangment.book.store.Order;
 import com.sitech.book.mangment.book.store.OrderRepository;
 import com.sitech.book.mangment.book.store.service.OrderService;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -14,37 +16,70 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final BookRepository bookRepository;
 
+    @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, BookRepository bookRepository) {
         this.orderRepository = orderRepository;
         this.bookRepository = bookRepository;
     }
+
+    @Override
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
+
     @Override
     public Order createOrder() {
-        return orderRepository.save(new Order());
+        Order order = new Order();
+        return orderRepository.save(order);
     }
 
     @Override
-    public Order addToOrder(Long orderId, Long bookId) throws ChangeSetPersister.NotFoundException {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
-
-        book.setOrder(order);
-        bookRepository.save(book);
-        return order;
+    public void deleteOrder(Long id) {
+        orderRepository.deleteById(id);
     }
 
     @Override
-    public void removeFromOrder(Long orderId, Long bookId) throws ChangeSetPersister.NotFoundException {
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+    public void addBookToOrder(Long orderId, Long bookId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
 
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+        if (order != null && book != null) {
+            order.addBook(book);
+            orderRepository.save(order);
+        }
+    }
 
-        book.setOrder(null);
-        bookRepository.save(book);
+    @Override
+    public void removeBookFromOrder(Long orderId, Long bookId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        Book book = bookRepository.findById(bookId).orElse(null);
+
+        if (order != null && book != null) {
+            order.removeBook(book);
+            orderRepository.save(order);
+        }
+    }
+
+    @Override
+    public int getTotalNumberOfBooksInOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            return order.getTotalNumberOfBooks();
+        }
+        return 0;
+    }
+
+    @Override
+    public double getTotalPriceInOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            return order.getTotalPrice();
+        }
+        return 0.0;
     }
 }

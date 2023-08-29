@@ -7,8 +7,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Application {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(Application.class, args);
-        Object context = run(args);
+		Object context = run(args);
 
 		// Check if the database connection is successful
 		boolean databaseConnected = checkDatabaseConnection((ConfigurableApplicationContext) context);
@@ -20,11 +19,10 @@ public class Application {
 	}
 
 	private static Object run(String[] ignoredArgs) {
-        return null;
+		return null;
 	}
 
 	private static boolean checkDatabaseConnection(ConfigurableApplicationContext ignoredContext) {
 		return true;
 	}
 }
-

@@ -45,8 +45,14 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.4.2.Final</version> <!-- Use the latest version -->
 		</dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
