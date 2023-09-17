@@ -1,50 +1,50 @@
 package com.sitech.book.mangment.book.store.controller;
 
-import com.sitech.book.mangment.book.store.Book;
+import com.sitech.book.mangment.book.store.dto.BookDTO;
 import com.sitech.book.mangment.book.store.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
-    private final BookService bookService;
 
     @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
+    private BookService bookService;
 
-    @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        Book createdBook = bookService.createBook(book);
+    @PostMapping(
+            value = "/createBook",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
+        BookDTO createdBook = bookService.createBook(bookDTO);
         return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = bookService.getAllBooks();
-        return new ResponseEntity<>(books, HttpStatus.OK);
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+        List<BookDTO> booksDtos = bookService.getAllBooks();
+        return new ResponseEntity<>(booksDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
-        Book book = bookService.getBookById(id);
-        if (book != null) {
-            return new ResponseEntity<>(book, HttpStatus.OK);
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException{
+        BookDTO bookDTO = bookService.getBookById(id);
+        if (bookDTO != null) {
+            return new ResponseEntity<>(bookDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
-        Book updatedBook = bookService.updateBook(id, book);
+    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
+        BookDTO updatedBook = bookService.updateBook(id, bookDTO);
         if (updatedBook != null) {
             return new ResponseEntity<>(updatedBook, HttpStatus.OK);
         } else {
@@ -54,8 +54,11 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean deleted = bookService.deleteBook(id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     // Other API methods using bookService

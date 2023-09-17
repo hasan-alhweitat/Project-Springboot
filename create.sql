@@ -1,194 +1,189 @@
 
     create table books (
-        id integer not null,
-        year integer not null,
-        category varchar(255),
-        name_book varchar(255),
-        primary key (id)
-    ) engine=InnoDB;
-
-    create table book (
-        price float(53),
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
         id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
-
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
-
-    create table book (
-        price float(53),
+    create table books (
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
         id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
-
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
-
-    create table book (
-        price float(53),
+    create table books (
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
         id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
-
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
-
-    create table book (
-        price float(53),
+    create table books (
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
         id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
-
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
-
-    create table book (
-        price float(53),
+    create table books (
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
         id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
-
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
-
-    create table book (
-        price float(53),
+    create table books (
+        price decimal(38,2),
         year integer,
-        cart_id bigint,
         id bigint not null auto_increment,
-        order_id bigint,
         book_name varchar(255),
         category varchar(255),
         primary key (id)
     ) engine=InnoDB;
 
-    create table cart (
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    create table order (
+    create table orders (
+        id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table books (
+        price decimal(38,2),
+        year integer,
+        id bigint not null auto_increment,
+        book_name varchar(255),
+        category varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table carts (
         id bigint not null auto_increment,
         primary key (id)
     ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKnqqwgf4vpry5kqjgbclg52xi 
-       foreign key (cart_id) 
-       references cart (id);
+    create table orders (
+        id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
 
-    alter table book 
-       add constraint FKjivuhjle9ok7f3vh82chnh0a5 
-       foreign key (order_id) 
-       references order (id);
+    create table books (
+        price decimal(38,2),
+        year integer,
+        id bigint not null auto_increment,
+        book_name varchar(255),
+        category varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table carts (
+        id bigint not null auto_increment,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table orders (
+        id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table books (
+        price decimal(38,2),
+        year integer,
+        id bigint not null auto_increment,
+        book_name varchar(255),
+        category varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table carts (
+        id bigint not null auto_increment,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table orders (
+        id bigint not null auto_increment,
+        order_date datetime(6),
+        name_order varchar(255),
+        primary key (id)
+    ) engine=InnoDB;

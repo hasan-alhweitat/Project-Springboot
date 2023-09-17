@@ -1,47 +1,59 @@
 package com.sitech.book.mangment.book.store.controller;
 
-import com.sitech.book.mangment.book.store.Cart;
+import com.sitech.book.mangment.book.store.dto.CartDTO;
 import com.sitech.book.mangment.book.store.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/carts")
 public class CartController {
-    private final CartService cartService;
     @Autowired
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+    private CartService cartService;
 
     @PostMapping
-    public ResponseEntity<Cart> createCart() {
-        Cart createdCart = cartService.createCart();
+    public ResponseEntity<CartDTO> createCart(@RequestBody CartDTO cartDTO) {
+        CartDTO createdCart = cartService.createCart(cartDTO);
         return new ResponseEntity<>(createdCart, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{cartId}/addBook/{bookId}")
-    public ResponseEntity<Void> addBookToCart(
-            @PathVariable Long cartId,
-            @PathVariable Long bookId) {
-        cartService.addBookToCart(cartId, bookId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<CartDTO>> getAllCarts() {
+        List<CartDTO> cartsDtos = cartService.getAllCarts();
+        return new ResponseEntity<>(cartsDtos, HttpStatus.OK);
     }
 
-    @PostMapping("/{cartId}/removeBook/{bookId}")
-    public ResponseEntity<Void> removeBookFromCart(
-            @PathVariable Long cartId,
-            @PathVariable Long bookId) {
-        cartService.removeBookFromCart(cartId, bookId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<CartDTO> getCartById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException {
+        CartDTO cartDTO = cartService.getCartById(id);
+        if (cartDTO != null) {
+            return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CartDTO> updateCart(@PathVariable Long id, @RequestBody CartDTO cartDTO) {
+        CartDTO updatedCart = cartService.updateCart(id, cartDTO);
+        if (updatedCart != null) {
+            return new ResponseEntity<>(updatedCart, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
-        cartService.deleteCart(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean deleted = cartService.deleteCart(id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    // Additional methods can be added here for custom queries or operations
 }

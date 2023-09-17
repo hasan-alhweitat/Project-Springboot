@@ -1,48 +1,69 @@
 package com.sitech.book.mangment.book.store.service.impl;
 
-import com.sitech.book.mangment.book.store.Book;
-import com.sitech.book.mangment.book.store.BookRepository;
-import com.sitech.book.mangment.book.store.Order;
-import com.sitech.book.mangment.book.store.OrderRepository;
+import com.sitech.book.mangment.book.store.dto.OrderDTO;
+import com.sitech.book.mangment.book.store.entity.Order;
+import com.sitech.book.mangment.book.store.mapper.OrderMapper;
+import com.sitech.book.mangment.book.store.repository.OrderRepository;
 import com.sitech.book.mangment.book.store.service.OrderService;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepository;
-    private final BookRepository bookRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, BookRepository bookRepository) {
-        this.orderRepository = orderRepository;
-        this.bookRepository = bookRepository;
+    private OrderMapper orderMapper;
+
+    @Override
+    public List<OrderDTO> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        return orderMapper.toOrderDTOs(orders);
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public OrderDTO getOrderById(Long id) throws ChangeSetPersister.NotFoundException{
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order != null) {
+            return orderMapper.toOrderDTO(order);
+        }
+        return null;
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElse(null);
+    public OrderDTO createOrder(OrderDTO orderDTO){
+        Order order = orderMapper.toOrder(orderDTO);
+        Order savedOrder = orderRepository.save(order);
+        return orderMapper.toOrderDTO(savedOrder);
     }
 
     @Override
-    public Order createOrder() {
-        Order order = new Order();
-        return orderRepository.save(order);
+    public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+        Order existingOrder = orderRepository.findById(id).orElse(null);
+        if (existingOrder != null) {
+            orderMapper.updateOrderFromDTO(orderDTO, existingOrder);
+            Order updatedOrder = orderRepository.save(existingOrder);
+            return orderMapper.toOrderDTO(updatedOrder);
+        }
+        return null;
     }
 
     @Override
-    public void deleteOrder(Long id) {
-        orderRepository.deleteById(id);
+    public boolean deleteOrder(Long id) {
+        Order existingOrder = orderRepository.findById(id).orElse(null);
+        if (existingOrder != null) {
+            orderRepository.delete(existingOrder);
+            return true;
+        }
+        return false;
     }
 
+    /*
     @Override
     public void addBookToOrder(Long orderId, Long bookId) {
         Order order = orderRepository.findById(orderId).orElse(null);
@@ -81,5 +102,5 @@ public class OrderServiceImpl implements OrderService {
             return order.getTotalPrice();
         }
         return 0.0;
-    }
+    }*/
 }
