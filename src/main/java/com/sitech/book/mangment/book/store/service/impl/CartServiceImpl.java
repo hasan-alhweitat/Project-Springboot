@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.service.impl;
 
-import com.sitech.book.mangment.book.store.dto.CartDTO;
+import com.sitech.book.mangment.book.store.dto.CartRequest;
+import com.sitech.book.mangment.book.store.dto.CartResponse;
 import com.sitech.book.mangment.book.store.entity.Cart;
 import com.sitech.book.mangment.book.store.mapper.CartMapper;
 import com.sitech.book.mangment.book.store.repository.CartRepository;
@@ -21,13 +22,13 @@ public class CartServiceImpl implements CartService {
     private CartMapper cartMapper;
 
     @Override
-    public List<CartDTO> getAllCarts() {
+    public List<CartResponse> getAllCarts() {
         List<Cart> cartDTOS = cartRepository.findAll();
         return cartMapper.toCartDTOs(cartDTOS);
     }
 
     @Override
-    public CartDTO getCartById(Long id) throws ChangeSetPersister.NotFoundException{
+    public CartResponse getCartById(Long id) throws ChangeSetPersister.NotFoundException{
         Cart cart = cartRepository.findById(id).orElse(null);
         if (cart != null) {
             return cartMapper.toCartDTO(cart);
@@ -36,17 +37,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDTO createCart(CartDTO cartDTO) {
-        Cart cart = cartMapper.toCart(cartDTO);
+    public CartResponse createCart(CartRequest cartRequest) {
+        Cart cart = cartMapper.toCart(cartRequest);
         Cart savedCart = cartRepository.save(cart);
         return cartMapper.toCartDTO(savedCart);
     }
 
     @Override
-    public CartDTO updateCart(Long id, CartDTO cartDTO) {
+    public CartResponse updateCart(Long id, CartRequest cartRequest) {
         Cart existingCart = cartRepository.findById(id).orElse(null);
         if (existingCart != null) {
-            cartMapper.updateCartFromDTO(cartDTO, existingCart);
+            cartMapper.updateCartFromDTO(cartRequest, existingCart);
             Cart updatedCart = cartRepository.save(existingCart);
             return cartMapper.toCartDTO(updatedCart);
         }

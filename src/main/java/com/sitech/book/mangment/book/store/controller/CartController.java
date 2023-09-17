@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.controller;
 
-import com.sitech.book.mangment.book.store.dto.CartDTO;
+import com.sitech.book.mangment.book.store.dto.CartRequest;
+import com.sitech.book.mangment.book.store.dto.CartResponse;
 import com.sitech.book.mangment.book.store.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -17,20 +18,20 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping
-    public ResponseEntity<CartDTO> createCart(@RequestBody CartDTO cartDTO) {
-        CartDTO createdCart = cartService.createCart(cartDTO);
+    public ResponseEntity<CartResponse> createCart(@RequestBody CartRequest cartDTO) {
+        CartResponse createdCart = cartService.createCart(cartDTO);
         return new ResponseEntity<>(createdCart, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<CartDTO>> getAllCarts() {
-        List<CartDTO> cartsDtos = cartService.getAllCarts();
+    public ResponseEntity<List<CartResponse>> getAllCarts() {
+        List<CartResponse> cartsDtos = cartService.getAllCarts();
         return new ResponseEntity<>(cartsDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CartDTO> getCartById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException {
-        CartDTO cartDTO = cartService.getCartById(id);
+    public ResponseEntity<CartResponse> getCartById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException {
+        CartResponse cartDTO = cartService.getCartById(id);
         if (cartDTO != null) {
             return new ResponseEntity<>(cartDTO, HttpStatus.OK);
         } else {
@@ -39,8 +40,8 @@ public class CartController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CartDTO> updateCart(@PathVariable Long id, @RequestBody CartDTO cartDTO) {
-        CartDTO updatedCart = cartService.updateCart(id, cartDTO);
+    public ResponseEntity<CartResponse> updateCart(@PathVariable Long id, @RequestBody CartRequest cartDTO) {
+        CartResponse updatedCart = cartService.updateCart(id, cartDTO);
         if (updatedCart != null) {
             return new ResponseEntity<>(updatedCart, HttpStatus.OK);
         } else {

@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.mapper;
 
-import com.sitech.book.mangment.book.store.dto.BookDTO;
+import com.sitech.book.mangment.book.store.dto.BookRequest;
+import com.sitech.book.mangment.book.store.dto.BookResponse;
 import com.sitech.book.mangment.book.store.entity.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,9 +14,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BookMappers {
     BookMappers INSTANCE = Mappers.getMapper(BookMappers.class);
-    BookDTO toBookDTO(Book book);
-    List<BookDTO> toBookDTOs(List<Book> books);
-    Book toBook(BookDTO bookDTO);
+    BookResponse toBookDTO(Book book);
+    List<BookResponse> toBookDTOs(List<Book> books);
+    Book toBook(BookRequest bookRequest);
     @Mapping(target = "id", ignore = true)
-    void updateBookFromDTO(BookDTO bookDTO, @MappingTarget Book book);
+    void updateBookFromDTO(BookRequest bookRequest, @MappingTarget Book book);
 }

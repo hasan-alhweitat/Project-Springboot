@@ -1,16 +1,17 @@
 package com.sitech.book.mangment.book.store.service;
 
-import com.sitech.book.mangment.book.store.dto.CartDTO;
+import com.sitech.book.mangment.book.store.dto.CartRequest;
+import com.sitech.book.mangment.book.store.dto.CartResponse;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
 
 public interface CartService {
-        CartDTO createCart(CartDTO cartDTO);
-        CartDTO getCartById(Long id)throws ChangeSetPersister.NotFoundException;
-        CartDTO updateCart(Long id, CartDTO cartDTO);
+        CartResponse createCart(CartRequest cartRequest);
+        CartResponse getCartById(Long id)throws ChangeSetPersister.NotFoundException;
+        CartResponse updateCart(Long id, CartRequest cartRequest);
         boolean deleteCart(Long id);
-        List<CartDTO> getAllCarts();
+        List<CartResponse> getAllCarts();
 
         /*
         //void addBookToCart(Long cartId, Long bookId);

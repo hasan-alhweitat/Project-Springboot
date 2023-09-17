@@ -1,7 +1,8 @@
 package com.sitech.book.mangment.book.store.service.impl;
 
 
-import com.sitech.book.mangment.book.store.dto.BookDTO;
+import com.sitech.book.mangment.book.store.dto.BookRequest;
+import com.sitech.book.mangment.book.store.dto.BookResponse;
 import com.sitech.book.mangment.book.store.entity.Book;
 import com.sitech.book.mangment.book.store.mapper.BookMappers;
 import com.sitech.book.mangment.book.store.repository.BookRepository;
@@ -16,22 +17,20 @@ import java.util.List;
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
-
     @Autowired
     private BookRepository bookRepository;
-
     @Autowired
     private BookMappers bookMappers;
 
     // Method to retrieve all books
     @Override
-    public List<BookDTO> getAllBooks() {
+    public List<BookResponse> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         return bookMappers.toBookDTOs(books);
     }
 
     @Override
-    public BookDTO getBookById(Long id)throws ChangeSetPersister.NotFoundException{
+    public BookResponse getBookById(Long id)throws ChangeSetPersister.NotFoundException{
         Book book = bookRepository.findById(id).orElse(null);
         if (book != null) {
             return bookMappers.toBookDTO(book);
@@ -40,17 +39,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDTO createBook(BookDTO bookDTO) {
-        Book book = bookMappers.toBook(bookDTO);
+    public BookResponse createBook(BookRequest bookRequest) {
+        Book book = bookMappers.toBook(bookRequest);
         Book savedBook = bookRepository.save(book);
         return bookMappers.toBookDTO(savedBook);
     }
 
     @Override
-    public BookDTO updateBook(Long id, BookDTO bookDTO) {
+    public BookResponse updateBook(Long id, BookRequest bookRequest) {
         Book existingBook = bookRepository.findById(id).orElse(null);
         if (existingBook != null) {
-            bookMappers.updateBookFromDTO(bookDTO, existingBook);
+            bookMappers.updateBookFromDTO(bookRequest, existingBook);
             Book updatedBook = bookRepository.save(existingBook);
             return bookMappers.toBookDTO(updatedBook);
         }

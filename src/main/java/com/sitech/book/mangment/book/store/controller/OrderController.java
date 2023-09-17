@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.controller;
 
-import com.sitech.book.mangment.book.store.dto.OrderDTO;
+import com.sitech.book.mangment.book.store.dto.OrderRequest;
+import com.sitech.book.mangment.book.store.dto.OrderResponse;
 import com.sitech.book.mangment.book.store.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -18,30 +19,30 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
-        OrderDTO createdOrder = orderService.createOrder(orderDTO);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderDTO) {
+        OrderResponse createdOrder = orderService.createOrder(orderDTO);
         return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> getAllOrders() {
-        List<OrderDTO> ordersDtos = orderService.getAllOrders();
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        List<OrderResponse> ordersDtos = orderService.getAllOrders();
         return new ResponseEntity<>(ordersDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
-        OrderDTO orderDTO = orderService.getOrderById(id);
-        if (orderDTO != null) {
-            return new ResponseEntity<>(orderDTO, HttpStatus.OK);
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+        OrderResponse orderResponse = orderService.getOrderById(id);
+        if (orderResponse != null) {
+            return new ResponseEntity<>(orderResponse, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
-        OrderDTO updatedOrder = orderService.updateOrder(id, orderDTO);
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable Long id, @RequestBody OrderRequest orderDTO) {
+        OrderResponse updatedOrder = orderService.updateOrder(id, orderDTO);
         if (updatedOrder != null) {
             return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
         } else {

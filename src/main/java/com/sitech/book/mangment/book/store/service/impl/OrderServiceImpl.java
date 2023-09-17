@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.service.impl;
 
-import com.sitech.book.mangment.book.store.dto.OrderDTO;
+import com.sitech.book.mangment.book.store.dto.OrderRequest;
+import com.sitech.book.mangment.book.store.dto.OrderResponse;
 import com.sitech.book.mangment.book.store.entity.Order;
 import com.sitech.book.mangment.book.store.mapper.OrderMapper;
 import com.sitech.book.mangment.book.store.repository.OrderRepository;
@@ -21,13 +22,13 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
-    public List<OrderDTO> getAllOrders() {
+    public List<OrderResponse> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orderMapper.toOrderDTOs(orders);
     }
 
     @Override
-    public OrderDTO getOrderById(Long id) throws ChangeSetPersister.NotFoundException{
+    public OrderResponse getOrderById(Long id) throws ChangeSetPersister.NotFoundException{
         Order order = orderRepository.findById(id).orElse(null);
         if (order != null) {
             return orderMapper.toOrderDTO(order);
@@ -36,17 +37,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO createOrder(OrderDTO orderDTO){
-        Order order = orderMapper.toOrder(orderDTO);
+    public OrderResponse createOrder(OrderRequest orderRequest){
+        Order order = orderMapper.toOrder(orderRequest);
         Order savedOrder = orderRepository.save(order);
         return orderMapper.toOrderDTO(savedOrder);
     }
 
     @Override
-    public OrderDTO updateOrder(Long id, OrderDTO orderDTO) {
+    public OrderResponse updateOrder(Long id, OrderRequest orderRequest) {
         Order existingOrder = orderRepository.findById(id).orElse(null);
         if (existingOrder != null) {
-            orderMapper.updateOrderFromDTO(orderDTO, existingOrder);
+            orderMapper.updateOrderFromDTO(orderRequest, existingOrder);
             Order updatedOrder = orderRepository.save(existingOrder);
             return orderMapper.toOrderDTO(updatedOrder);
         }

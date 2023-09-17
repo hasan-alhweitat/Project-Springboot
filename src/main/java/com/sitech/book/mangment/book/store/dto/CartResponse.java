@@ -2,14 +2,14 @@ package com.sitech.book.mangment.book.store.dto;
 
 import java.math.BigDecimal;
 
-public class CartDTO {
+public class CartResponse {
     private Long id;
     private BigDecimal totalPrice;
 
-    public CartDTO() {
+    public CartResponse() {
     }
 
-    public CartDTO(BigDecimal totalPrice) {
+    public CartResponse(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

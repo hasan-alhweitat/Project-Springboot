@@ -1,16 +1,16 @@
 package com.sitech.book.mangment.book.store.dto;
 
-public class BookDTO {
+public class BookResponse {
     private Long id;
     private String bookName;
     private int year;
     private String category;
     private double price;
 
-    public BookDTO(){
+    public BookResponse(){
     }
 
-    public BookDTO( String bookName, int year, String category, double price) {
+    public BookResponse(String bookName, int year, String category, double price) {
         this.bookName = bookName;
         this.year = year;
         this.category = category;

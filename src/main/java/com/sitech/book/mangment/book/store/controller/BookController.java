@@ -1,6 +1,7 @@
 package com.sitech.book.mangment.book.store.controller;
 
-import com.sitech.book.mangment.book.store.dto.BookDTO;
+import com.sitech.book.mangment.book.store.dto.BookRequest;
+import com.sitech.book.mangment.book.store.dto.BookResponse;
 import com.sitech.book.mangment.book.store.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -21,20 +22,20 @@ public class BookController {
     @PostMapping(
             value = "/createBook",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<BookDTO> createBook(@RequestBody BookDTO bookDTO) {
-        BookDTO createdBook = bookService.createBook(bookDTO);
+    public ResponseEntity<BookResponse> createBook(@RequestBody BookRequest bookRequest) {
+        BookResponse createdBook = bookService.createBook(bookRequest);
         return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> getAllBooks() {
-        List<BookDTO> booksDtos = bookService.getAllBooks();
+    public ResponseEntity<List<BookResponse>> getAllBooks() {
+        List<BookResponse> booksDtos = bookService.getAllBooks();
         return new ResponseEntity<>(booksDtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDTO> getBookById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException{
-        BookDTO bookDTO = bookService.getBookById(id);
+    public ResponseEntity<BookResponse> getBookById(@PathVariable Long id)throws ChangeSetPersister.NotFoundException{
+        BookResponse bookDTO = bookService.getBookById(id);
         if (bookDTO != null) {
             return new ResponseEntity<>(bookDTO, HttpStatus.OK);
         } else {
@@ -43,8 +44,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
-        BookDTO updatedBook = bookService.updateBook(id, bookDTO);
+    public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @RequestBody BookRequest bookDTO) {
+        BookResponse updatedBook = bookService.updateBook(id, bookDTO);
         if (updatedBook != null) {
             return new ResponseEntity<>(updatedBook, HttpStatus.OK);
         } else {

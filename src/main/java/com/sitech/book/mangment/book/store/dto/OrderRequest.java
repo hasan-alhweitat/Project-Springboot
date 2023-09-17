@@ -2,15 +2,15 @@ package com.sitech.book.mangment.book.store.dto;
 
 import java.time.LocalDateTime;
 
-public class OrderDTO {
+public class OrderRequest {
     private Long id;
     private String nameOrder;
     private LocalDateTime orderDate;
 
-    public OrderDTO() {
+    public OrderRequest() {
     }
 
-    public OrderDTO(String nameOrder) {
+    public OrderRequest(String nameOrder) {
         this.nameOrder = nameOrder;
         this.orderDate = LocalDateTime.now();
     }
